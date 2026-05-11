@@ -1,0 +1,65 @@
+import numpy as np
+
+V = 5
+m = 8
+
+edges = [
+    (0, 1),
+    (0, 2),
+    (0, 4),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (3, 2),
+    (4, 3)
+]
+
+#матрица смежности
+adj_matrix = np.zeros((V, V))
+for u, v in edges:
+    adj_matrix[u][v] = 1
+
+print("Матрица смежности")
+print(adj_matrix)
+
+#матрица инцидентности
+E = len(edges)
+inc_matrix = np.zeros((V, E), dtype=int)
+for j, (u, v) in enumerate(edges):
+    inc_matrix[u][j] = -1
+    inc_matrix[v][j] = 1
+
+print("\n", "Матрица инцидентности")
+print(inc_matrix)
+
+#список смежности
+adj_list = {i: [] for i in range(V)}
+for u, v in edges:
+    adj_list[u].append(v)
+
+print("\nСписок смежности")
+for key, value in adj_list.items():
+    print(key, value)
+
+#список дуг
+tails = np.array([u for u, v in edges])
+heads = np.array([v for u, v in edges])
+
+print("\n1г. Список дуг (два массива):")
+print("  Начала (tails):", tails)
+print("  Концы  (heads):", heads)
+
+# упорядоченный список дуг
+list_of_edge = sorted(edges)
+heads_ordered = np.array([v for u, v in list_of_edge])
+S = np.full(V + 1, m, dtype=int)
+
+for i in range(m):
+    start_vertex = list_of_edge[i][0]
+    if S[start_vertex] > i:
+        S[start_vertex] = i
+
+print("\nУпорядоченный список дуг:")
+print("  Пары:       ", list_of_edge)
+print("  Указатели на начала:", S)
+print("  Концы: ", heads_ordered)
